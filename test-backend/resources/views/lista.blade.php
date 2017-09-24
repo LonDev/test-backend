@@ -1,34 +1,42 @@
-<!DOCTYPE html>
-<html ng-app="lista">
-<head>
-	<title>Lista de Contatos</title>
-	<!-- documentos de estilo e js sendo carregado com as tags de  notação alterada do blade -->
-	<link rel="stylesheet" type="text/css" href="<% url('css/style.css') %>">
-
-	<script src="https://code.jquery.com/jquery-1.11.3.js" integrity="sha256-IGWuzKD7mwVnNY01LtXxq3L84Tm/RJtNCYBfXZw3Je0=" crossorigin="anonymous"></script>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-
-	<script type="text/javascript" src="<% url('js/listaController.js') %>"></script>
-
-
-</head>
-<body ng-controller="listaController">
+@extends('header')
+@section('content')
 	<div class="lista">
+		<div align="right" class="header">
+			Bem-vindo <% Auth::user()->name %> <a href="<% url('logout') %>">Logout</a>
+		</div>
+	
 		<h3>Lista de Contatos</h3>
 		
-		<div id="novo"><a href="">Novo contato</a></div>
+		<div id="novo"><a href="" ng-click="novo()">Novo</a></div>
 
 		<div class="add">
-			<label>Nome:</label>
-			<input type="text" ng-model="contato.nome" name="nome" placeholder="João"><br>
-			<label>E-mail:</label>
-			<input type="text" ng-model="contato.email" name="email" placeholder="ex: e-mail@email.com"><br>
-			<label>Telefone:</label>
-			<input type="number" ng-model="contato.telefone" name="telefone" placeholder="99999-9999"><br>
+			@if($errors->any())
+				<div class="alert">
+					<ul>
+					@foreach($errors->all() as $error)
+						<li><% $error %></li>
+					@endforeach
+					</ul>	
+				</div>
+			@endif
+			<form>
+				<% csrf_field() %>
+				<input hidden ng-model="contato.id" name="id">
+				
+				<label>Nome:</label>
+				<input type="text" ng-model="contato.nome" name="nome" placeholder="João"><br>
+				
+				<label>E-mail:</label>
+				<input type="text" ng-model="contato.email" name="email" placeholder="ex: e-mail@email.com"><br>
+				
+				<label>Telefone:</label>
+				<input type="text" ng-model="contato.telefone" name="telefone" placeholder="99999-9999"><br>
 
-			<button>salvar</button>
+				<button ng-click="save(contato)">salvar</button>
+			</form>
+			<div id="cancelar"><a href="" ng-click="cancelar()">Cancelar</a></div>
 		</div>
+		<hr>
 		<table>
 			<tr>
 				<th>Nome</th>
@@ -37,12 +45,13 @@
 				<th>Ação</th>
 			</tr>
 			<tr ng-repeat="contato in contatos">
-				<td>{{ contato.NOME }}</td>
-				<td>{{ contato.EMAIL }}</td>
-				<td>{{ contato.TELEFONE }}</td>
-				<td><a href="">alterar</a> | <a href="">excluir</a> </td>
+				<td>{{ contato.nome }}</td>
+				<td>{{ contato.email }}</td>
+				<td>{{ contato.telefone }}</td>
+				<td><a href="" ng-click="find( contato.id )">Editar</a> <a href="" ng-click="delete( contato )" >Apagar</a> </td>
 			</tr>
 		</table>
 	</div>
 </body>
 </html>
+@endsection

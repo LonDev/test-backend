@@ -14,16 +14,35 @@ body{
 	}
 	.add{
 		background: #E0E0E0;
+		display: none;
 	}
-	#novo{
+	#novo,#cancelar{
 		margin-bottom: 5px;
 		text-align: left;
+		font-size: small;
+	}
+	#cancelar{
+		margin-bottom: 5px;
+		text-align: right;
 		font-size: small;
 	}
 	table{
 		width: 90%;
 		margin: 0 auto;
 	}
-	.contato{
-		width: 90%;
+
+	table th{
+		border-bottom: 1px solid;
 	}
+
+	a, button{
+		font-size: small;
+		margin-top: 5px;
+		background: #DEDEEE;
+		padding: 2px 7px 2px 7px;
+		border-radius: 5px;
+		border: 1px solid silver;
+		text-align: center;
+		text-decoration: none;
+	}
+}

@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
+use App\Http\Request\UserRequest;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -17,23 +18,34 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest', ['except' => 'logout']);
+    //redireciona para a tela de login
+     public function index(){
+        return view('login');
     }
+    //recebe um obj da classe de validação UserRequest
+    public function authenticate(UserRequest $request){
+        //recupera senha validada e encripta a senha
+        //$senha = bcrypt($request->input('password'));
+        $senha = $request->input('password');
+        
+        //recupera o nome validado
+        $name = $request->input('name');
+
+        if (Auth::attempt(['name' => $name, 'password' =>$senha]))
+        {
+            // Authentication passed...
+            return redirect('/');
+        }
+        else{
+            return redirect('/login');
+        }
+    }
+
+    public function logout(){
+       // Session::flush(); //clears out all the exisiting sessions
+        Auth::logout();
+       return redirect('/');
+    }
+
+
 }
