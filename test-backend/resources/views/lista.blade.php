@@ -2,7 +2,7 @@
 @section('content')
 	<div class="lista">
 		<div align="right" class="header">
-			Bem-vindo <% Auth::user()->name %> <a href="<% url('logout') %>">Logout</a>
+			Bem-vindo {{ Auth::user()->name }} <a href="{{ url('logout') }}">Logout</a>
 		</div>
 	
 		<h3>Lista de Contatos</h3>
@@ -14,13 +14,13 @@
 				<div class="alert">
 					<ul>
 					@foreach($errors->all() as $error)
-						<li><% $error %></li>
+						<li>{{ $error }}</li>
 					@endforeach
 					</ul>	
 				</div>
 			@endif
 			<form>
-				<% csrf_field() %>
+				{{ csrf_field() }}
 				<input hidden ng-model="contato.id" name="id">
 				
 				<label>Nome:</label>
@@ -45,9 +45,9 @@
 				<th>Ação</th>
 			</tr>
 			<tr ng-repeat="contato in contatos">
-				<td>{{ contato.nome }}</td>
-				<td>{{ contato.email }}</td>
-				<td>{{ contato.telefone }}</td>
+				<td><span ng-bind="contato.nome"></span></td>
+				<td><span ng-bind="contato.email"></span></td>
+				<td><span ng-bind="contato.telefone"></span></td>
 				<td><a href="" ng-click="find( contato.id )">Editar</a> <a href="" ng-click="delete( contato )" >Apagar</a> </td>
 			</tr>
 		</table>
